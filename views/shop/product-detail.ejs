@@ -1,18 +1,69 @@
 <%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/productdetail.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fontawesome-free-6.1.1-web/css/all.css">
     </head>
 
-    <body>
-        <%- include('../includes/navigation.ejs') %>
-        <main class="centered">
-            <h1><%= product.title %></h1>
-            <hr>
-            <div class="image">
-                <img src="/<%= product.imageUrl %>" alt="<%= product.title %>">
+<body>
+    <%- include('../includes/navigation.ejs') %>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="product-detail">
+                    <div class="product-image">
+                        <img class="image_detail" src="/<%= product.imageUrl %>" alt="anh">
+                    </div>
+                    <div class="product-container">
+                        <div class="product-container-detail">
+
+                            <div class="product-price">
+                                <h2 class="product-price-detail product-price-item">$<%= product.price %></h2>
+                                <!-- <h2 class="product-price-coupoun product-price-item">$<%= product.price -60 %> </h2>
+                                <h2 class="product-price-person product-price-item">20%</h2> -->
+
+                            </div>
+                            <div class="product-title">
+                                <h1 class="product-title-header"><%= product.title %></h1>
+
+                                <div class="product-title-footer">
+                                    <p class="title-footer title-footer-rate">
+                                        4.86
+                                    </p>
+                                    <div class="title-footer title-footer-like">
+                                        <i class="fa-solid fa-star title-footer-icon"></i>
+                                        <i class="fa-solid fa-star title-footer-icon"></i>
+                                        <i class="fa-solid fa-star title-footer-icon"></i>
+                                        <i class="fa-solid fa-star title-footer-icon"></i>
+                                        <i class="fa-solid fa-star title-footer-icon"></i>
+                                    </div>
+                                    <p class="title-footer title-footer-view">
+                                        Read 2947 reviews
+                                    </p>
+                                </div>
+
+                                <p class="product-title-description"><%= product.description %></p>
+                            </div>
+                            <div class="product-size">
+                                <span>Size: </span>
+                                <div class="product-size-detail active">
+                                    Mini Size
+                                </div>
+                                <div class="product-size-detail">
+                                    Full Size
+                                </div>
+                            </div>
+                            <div class="product-footer">
+                                <% if (isAuthenticated) { %>
+                                    <%- include('../includes/add-to-cart.ejs', {product: product}) %>
+                                <% } %>
+                
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-            <h2><%= product.price %></h2>
-            <p><%= product.description %></p>
-            <% if (isAuthenticated) { %>
-                <%- include('../includes/add-to-cart.ejs', {product: product}) %>
-            <% } %>
-        </main>
-        <%- include('../includes/end.ejs') %>
+        </div>
+    </div>
+
+<%- include('../includes/end.ejs') %>

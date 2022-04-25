@@ -1,0 +1,155 @@
+.product-detail{
+    /* background-color: rgb(179, 165, 165); */
+    margin-top: 80px;
+    width: auto;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    /* font-family: sans-serif; */
+    border: 2px solid rgb(212, 121, 121);
+    border-radius: 10px;
+}
+
+.product-image{
+    
+}
+
+.image_detail{
+    width: auto;
+    background-color: rgb(213, 194, 188);
+    padding: 40px 40px;
+    border-radius: 4px;
+    /* margin-right: 100px; */
+    height: 500px;
+}
+
+
+.product-container{
+    width: auto;
+    height: 500px;
+
+    
+}
+
+.product-container-detail{
+    height: 500px;
+    margin-left: 40px;
+}
+
+.product-price{
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    font-size: 16px;
+
+}
+.product-price-item{
+    font-size: 18px;
+    margin-right: 12px;
+
+}
+
+.product-price-detail{
+    border-radius: 3px;
+}
+.product-price-detail{
+    border-radius: 3px;
+}
+
+.product-price-coupoun{
+    
+}
+
+.product-price-person{
+    padding: 4px 8px;
+    border-radius: 4px;
+    color:aliceblue;
+    background-color: #4e7661;
+
+}
+
+.product-title{
+    margin-top: 20px;
+    min-width: 100px;
+    display: block;
+}
+
+.product-footer{
+    margin-top: 40px;
+    
+
+}
+
+.footer-item-detail{
+    background-color: black;
+    padding: 8px 48px ;
+    font-size: 20px;
+    color: white;
+    font-family: inherit;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.product-title-header{
+
+}
+
+.product-title-description{
+    
+    color: #666;
+}
+
+.product-title-footer{
+    display: flex;
+    align-items: flex-start;   
+}
+
+.product-size{
+    display: flex;
+    align-items: center;
+}
+
+.product-size-detail{
+    font-size: 14px;
+    margin-left: 8px;
+    padding: 10px 10px ;
+    border-radius: 3px;
+}
+.product-size-detail.active{
+    border-radius: 3px;
+    margin-left: 8px;
+    padding: 8px 8px ;
+    border: 2px solid black;
+    cursor: pointer;
+}
+
+.product-size-detail:hover{
+    border-radius: 3px;
+    background-color: #999;
+    margin-left: 8px;
+    padding: 9px 9px ;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.title-footer-rate{
+    padding: 0;
+
+}
+
+.title-footer {
+    font-size: 16px;
+    margin-right: 12px;
+    color: #666;
+}
+
+.title-footer-like{
+    
+}
+
+.title-footer-icon{
+    color: #4e7661;
+    font-size: 16px;
+}

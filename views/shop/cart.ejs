@@ -1,35 +1,110 @@
 <%- include('../includes/head.ejs') %>
     <link rel="stylesheet" href="/css/cart.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     </head>
 
     <body>
         <%- include('../includes/navigation.ejs') %>
-        <main>
-            <% if (products.length > 0) { %>
-                <ul class="cart__item-list">
-                    <% products.forEach(p => { %>
-                        <li class="cart__item">
-                            <h1><%= p.productId.title %></h1>
-                            <h2>Quantity: <%= p.quantity %></h2>
-                            <form action="/cart-delete-item" method="POST">
-                                <input type="hidden" value="<%= p.productId._id %>" name="productId">
-                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                                <button class="btn danger" type="submit">Delete</button>
-                            </form>
-                        </li>
-                    <% }) %>
-                </ul>
-                <hr>
-                <div class="centered">
-                    <!--<form action="/create-order" method="POST">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                        <button type="submit" class="btn">Order Now!</button>
-                    </form>-->
-                    <a class="btn" href="/checkout">Order Now!</a>
-                </div>
-                
-            <% } else { %>
-                <h1>No Products in Cart!</h1>
-            <% } %>
-        </main>
-        <%- include('../includes/end.ejs') %>
+            <main>
+                <% if (products.length> 0) { %>
+                    <ul class="cart__item-list">
+                        <% products.forEach(p=> { %>
+                            <li class="cart__item">
+                                <h1>
+                                    <%= p.productId.title %>
+                                </h1>
+                                <h2>Quantity: <%= p.quantity %>
+                                </h2>
+                                <button class="btn danger" danger data-toggle="modal" data-target="#delete-product" data-id="<%= p.productId._id %>" data-csrf="<%= csrfToken %>">Delete</button>
+                            </li>
+                            <% }) %>
+                    </ul>
+                    <hr>
+                    <div class="centered">
+                      <button id="btnOder" type="submit" class="btn" data-csrf="<%= csrfToken %>">Order Now!</button>
+                    </div>
+                    
+                    <% } else { %>
+                      <h1>No Products in Cart!</h1>
+                      <% } %>
+                    </main>
+                    
+                    <!-- UI verify Delete -->
+                    <div id="delete-product" class="modal" tabindex="-1" role="dialog">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <p>Modal body text goes here.</p>
+                          </div>
+                          <div class="modal-footer">
+                            <button id="deleteProductId" type="button" class="btn btn-danger">Delete</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+            <!-- Form post Order Now -->
+            <form name="post-order-Products" method="POST">
+                <input id="hidden-csrf-form-order" type="hidden" name="_csrf">
+            </form>
+
+            <!-- Form hidden delete -->
+            <form name="delete-form-ProductId" method="POST">
+                <input id="hidden-productId" type="hidden"  name="productId">
+                <input id="hidden-csrf" type="hidden" name="_csrf" >
+            </form>
+
+            <script>
+              // Exec form Delete 
+                const btnDeleteProductId = document.getElementById('deleteProductId')
+                const deleteForm = document.forms['delete-form-ProductId']
+                let prodId;
+                let csrf;
+                document.addEventListener('DOMContentLoaded' , () =>{
+                    $('#delete-product').on('show.bs.modal', function (event) {
+                        const button = $(event.relatedTarget) 
+                        prodId = button.data('id')  
+                        csrf = button.data('csrf')  
+                        console.log(prodId)     
+                    })
+                })
+
+                btnDeleteProductId.onclick = () =>{
+                    deleteForm.action = '/cart-delete-item';
+
+                    const hidden_Prod = document.getElementById('hidden-productId');
+                    const hidden_csrf = document.getElementById('hidden-csrf');
+
+                    hidden_Prod.value = prodId;
+                    hidden_csrf.value = csrf;
+                    deleteForm.submit();
+                }
+
+              // Exec even Order Now !
+              const btnOrderNow = document.getElementById('btnOder')
+              const PostOrderNow = document.forms['post-order-Products']
+              
+             
+              btnOrderNow.onclick = () =>{
+                const csrf = btnOrderNow.getAttribute('data-csrf');
+                const hidden_csrf = document.getElementById('hidden-csrf-form-order');
+                hidden_csrf.value = csrf;
+
+                PostOrderNow.action = '/create-order';
+                PostOrderNow.submit()
+              } 
+
+            </script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+            <%- include('../includes/end.ejs') %>

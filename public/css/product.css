@@ -1,27 +1,96 @@
-.product-form {
-    width: 20rem;
-    max-width: 90%;
-    margin: auto;
-    display: block;
+.card {
+    margin-top: 40px;
+    position: relative;
+    display: flex;
+    width: auto;
+    height: 300px;
+    border-radius: 4px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
 }
 
-.product-item {
-    width: 20rem;
-    max-width: 95%;
-    margin: 1rem;
+.card:hover{
+    
 }
 
-.product__title {
-    font-size: 1.2rem;
+.card__header{
+    position: absolute;
+    top: 16px;
+    left: 0;
+
+    z-index: 1;
+    background-color: rgb(70, 62, 51);
+    padding: 4px 4px;
+    border-radius: 3px;
     text-align: center;
+
+
 }
 
-.product__price {
-    text-align: center;
-    color: #4d4d4d;
-    margin-bottom: 0.5rem;
+.product__title{
+    color: white;
+    font-size: 20px;
+    font-weight: 200;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-.product__description {
+.card__image{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    border-radius: 4px;
+}
+
+.card__content{
+    position: absolute;
     text-align: center;
+    bottom: 32px;
+    /* right: 0; */
+    font-size: 16px;
+
+}
+
+.card__actions{
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+
+}
+
+.footer-item-detail{
+    padding: 8px 8px ;
+    background-color: black;
+    font-size: 10px;
+    font-weight: 600;
+    color: black;
+    text-decoration: none;
+    border-radius: 4px;
+    background-color: aquamarine;
+    border: none;
+    cursor: pointer;
+
+}
+
+.footer-item-detail:hover{
+    background-color: burlywood;
+    color: black;
+}
+
+
+
+.product-item{
+}
+
+.product__price{
+    font-size: 20px;
+}
+
+.product__description{
+    font-size: 16px;
+    opacity: 0.8;
 }
