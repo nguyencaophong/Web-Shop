@@ -76,33 +76,40 @@ exports.getIndex =async (req, res, next) => {
   }
 };
 
-exports.getCart =async (req, res, next) => {
-  try {
-    const getAllProduct =await req.user
-      .populate('cart.items.productId')
-      .execPopulate()
-
-    res.render('shop/cart', {
-      path: '/cart',
-      pageTitle: 'Your Cart',
-      products: getAllProduct.cart.items
+exports.getCart = (req, res, next) => {
+  req.user
+    .populate('cart.items.productId')
+    .execPopulate()
+    .then(user => {
+      const products = user.cart.items;
+      res.render('shop/cart', {
+        path: '/cart',
+        pageTitle: 'Your Cart',
+        products: products
+      });
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
     });
-  } catch (error) {
-    console.log(error);
-  }
 };
 
-exports.postCart = async (req, res, next) => {
-  try {
-    const prodId =req.body.productId;
-    const prodDetail = await Product.findById(prodId)
-
-    const listProduct =await req.user.addToCart(prodDetail)
-    res.redirect('/cart')
-    
-  } catch (error) {
-    console.log(error)
-  }
+exports.postCart = (req, res, next) => {
+  const prodId = req.body.productId;
+  Product.findById(prodId)
+    .then(product => {
+      return req.user.addToCart(product);
+    })
+    .then(result => {
+      console.log(result);
+      res.redirect('/cart');
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.postCartDeleteProduct =async (req, res, next) => {
@@ -149,17 +156,20 @@ exports.postOrder =(req, res, next) => {
     });
 };
 
-exports.getOrders =async(req, res, next) => {
-  try {
-    const productOrdered =await Order.find({ 'user.userId': req.user._id });
-    res.render('shop/orders', {
-      path: '/orders',
-      pageTitle: 'Your Orders',
-      orders: productOrdered,
+exports.getOrders = (req, res, next) => {
+  Order.find({ 'user.userId': req.user._id })
+    .then(orders => {
+      res.render('shop/orders', {
+        path: '/orders',
+        pageTitle: 'Your Orders',
+        orders: orders
+      });
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
     });
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 exports.getInvoice =async(req, res, next) => {
