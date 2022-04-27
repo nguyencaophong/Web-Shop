@@ -6,6 +6,7 @@ const PDFDocument = require('pdfkit');
 const Product = require('../models/product');
 const Order = require('../models/order');
 const { populate, countDocuments } = require('../models/product');
+const { isArrayBufferView } = require('util/types');
 
 const ITEMS_PER_PAGE = 6;
     
@@ -76,40 +77,37 @@ exports.getIndex =async (req, res, next) => {
   }
 };
 
-exports.getCart = (req, res, next) => {
-  req.user
-    .populate('cart.items.productId')
-    .execPopulate()
-    .then(user => {
-      const products = user.cart.items;
+exports.getCart =async (req, res, next) => {
+
+  try {
+    const getAllProduct =await req.user
+      .populate('cart.items.productId')
+      .execPopulate()
+      
+    
+      const products = getAllProduct.cart.items;
       res.render('shop/cart', {
-        path: '/cart',
-        pageTitle: 'Your Cart',
-        products: products
-      });
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+          path: '/cart',
+          pageTitle: 'Your Cart',
+          products: products
+        });     
+  } catch (error) {
+    console.log(error)
+  }
 };
 
-exports.postCart = (req, res, next) => {
+exports.postCart =async (req, res, next) => {
   const prodId = req.body.productId;
-  Product.findById(prodId)
-    .then(product => {
-      return req.user.addToCart(product);
-    })
-    .then(result => {
-      console.log(result);
-      res.redirect('/cart');
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
-    });
+  try {
+    const productIdDetail =await Product.findById(prodId);
+  
+    const addProduct =await req.user.addToCart(productIdDetail);
+
+    res.redirect('/cart')
+    
+  } catch (error) {
+    console.log(error)
+  }
 };
 
 exports.postCartDeleteProduct =async (req, res, next) => {
@@ -128,48 +126,50 @@ exports.postCartDeleteProduct =async (req, res, next) => {
 
 
 
-exports.postOrder =(req, res, next) => {
-  req.user
-    .populate('cart.items.productId')
-    .execPopulate()
-    .then(user => {
-        const products = user.cart.items.map(i => {
-        return { quantity: i.quantity, product: { ...i.productId._doc } };
-      });
-        const order = new Order({
-        user: {
-          email: req.user.email,
-          userId: req.user
+exports.postOrder =async(req, res, next) => {
+  console.log("POST ORDER")
+  try {
+    
+      const orderProduct =await req.user
+        .populate('cart.items.productId')
+        .execPopulate()
+    
+      function fillterProduct(product){
+        return { quantity: product.quantity, product: { ...product.productId._doc } };
+    
+      }
+      const listProduct = orderProduct.cart.items.map(fillterProduct);
+      
+      const order = new Order ({
+        user:{
+          email:req.user.email,
+          userId:req.user
         },
-        products: products
+        products: listProduct
       });
-      return order.save();
-    })
-    .then(result => {
-      return req.user.clearCart();
-    })
-    .then(() => {
+    
+      await order.save();
+      await req.user.clearCart();
+    
       res.redirect('/orders');
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  } catch (error) {
+    console.log(error);
+  }
+
 };
 
-exports.getOrders = (req, res, next) => {
-  Order.find({ 'user.userId': req.user._id })
-    .then(orders => {
-      res.render('shop/orders', {
-        path: '/orders',
-        pageTitle: 'Your Orders',
-        orders: orders
-      });
-    })
-    .catch(err => {
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
+exports.getOrders =async (req, res, next) => {
+  try {
+    const productOrder =await Order.find({'user.userId' : req.user._id});
+    res.render('shop/orders', {
+      path: '/orders',
+      pageTitle: 'Your Orders',
+      orders: productOrder,
     });
+    
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 exports.getInvoice =async(req, res, next) => {
