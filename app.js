@@ -8,6 +8,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
 const multer = require('multer');
+const dotenv = require('dotenv');
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
@@ -22,6 +23,8 @@ const store = new MongoDBStore({
 });
 
 const csrfProtection = csrf();
+
+dotenv.config();
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
