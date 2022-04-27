@@ -6,7 +6,7 @@ const PDFDocument = require('pdfkit');
 const Product = require('../models/product');
 const Order = require('../models/order');
 const { populate, countDocuments } = require('../models/product');
-const { isArrayBufferView } = require('util/types');
+
 
 const ITEMS_PER_PAGE = 6;
     

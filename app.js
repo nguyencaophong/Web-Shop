@@ -74,7 +74,7 @@ app.use(
 app.use(csrfProtection);
 app.use(flash());
 
-app.use(async(req, res, next) => {
+app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;
   res.locals.csrfToken = req.csrfToken();
   if((req.session.user)!=undefined){
