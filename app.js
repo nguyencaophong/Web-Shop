@@ -8,6 +8,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
 const multer = require('multer');
+const dotenv = require('dotenv');
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
@@ -22,6 +23,8 @@ const store = new MongoDBStore({
 });
 
 const csrfProtection = csrf();
+
+dotenv.config();
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -59,7 +62,9 @@ app.use(
 );
 
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use('/images', express.static(path.join(__dirname, 'images')));
+
 app.use(
   session({
     secret: 'my secret',
@@ -74,8 +79,12 @@ app.use(flash());
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;
   res.locals.csrfToken = req.csrfToken();
+  if((req.session.user)!=undefined){
+    res.locals.roleUser = req.session.user.role;
+  }
   next();
 });
+
 
 app.use((req, res, next) => {
   // throw new Error('Sync Dummy');
@@ -120,3 +129,6 @@ mongoose
   .catch(err => {
     console.log(err);
   });
+
+
+  

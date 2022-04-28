@@ -38,6 +38,16 @@
                     id="confirmPassword" 
                     value="<%= oldInput.confirmPassword %>">
             </div>
+
+            <div class="form-control">
+                <label for="roleUser">Role User</label>
+                <input 
+                    class=""
+                    type="password" 
+                    name="roleUser" 
+                    id="roleUser" 
+                    value="<%= oldInput.confirmPassword %>">
+            </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button class="btn" type="submit">Signup</button>
         </form>
