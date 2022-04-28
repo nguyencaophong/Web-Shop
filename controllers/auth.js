@@ -130,7 +130,7 @@ exports.postSignup =async(req, res, next) => {
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    // console.log(errors.array());
+
     return res.status(422).render('auth/signup', {
       path: '/signup',
       pageTitle: 'Signup',
@@ -304,28 +304,4 @@ exports.postNewPassword =async (req, res, next) => {
     console.log(error);
   }
 
-
-  // User.findOne({
-  //   resetToken: passwordToken,
-  //   resetTokenExpiration: { $gt: Date.now() },
-  //   _id: userId
-  // })
-  //   .then(user => {
-  //     resetUser = user;
-  //     return bcrypt.hash(newPassword, 12);
-  //   })
-  //   .then(hashedPassword => {
-  //     resetUser.password = hashedPassword;
-  //     resetUser.resetToken = undefined;
-  //     resetUser.resetTokenExpiration = undefined;
-  //     return resetUser.save();
-  //   })
-  //   .then(result => {
-  //     res.redirect('/login');
-  //   })
-  //   .catch(err => {
-  //     const error = new Error(err);
-  //     error.httpStatusCode = 500;
-  //     return next(error);
-  //   });
 };
