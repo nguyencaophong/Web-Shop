@@ -10,7 +10,8 @@
         <% if (errorMessage) { %>
             <div class="user-message user-message--error"><%= errorMessage %></div>
         <% } %>
-        <form class="product-form" action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" enctype="multipart/form-data">
+
+        <form class="product-form" action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" enctype="multipart/form-data"> 
             <div class="form-control">
                 <label for="title">Title</label>
                 <input 
@@ -20,6 +21,7 @@
                     id="title" 
                     value="<% if (editing || hasError) { %><%= product.title %><% } %>">
             </div>
+
             <div class="form-control">
                 <label for="image">Image</label>
                 <input 
@@ -27,6 +29,7 @@
                     name="image" 
                     id="image" >
             </div>
+
             <div class="form-control">
                 <label for="price">Price</label>
                 <input 
@@ -37,6 +40,7 @@
                     step="0.01" 
                     value="<% if (editing || hasError) { %><%= product.price %><% } %>">
             </div>
+
             <div class="form-control">
                 <label for="description">Description</label>
                 <textarea 
@@ -45,6 +49,7 @@
                     id="description" 
                     rows="5"><% if (editing || hasError) { %><%= product.description %><% } %></textarea>
             </div>
+            
             <% if (editing) { %>
                 <input type="hidden" value="<%= product._id %>" name="productId">
             <% } %>

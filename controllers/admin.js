@@ -14,7 +14,7 @@ exports.getAddProduct = (req, res) => {
         editing: false,
         hasError: false,
         errorMessage: null,
-        validationErrors: [],
+        validationErrors: []
     })
 }
 
@@ -32,12 +32,13 @@ exports.postAddProduct = (req, res, next) => {
             product: {
                 title: title,
                 price: price,
-                description: description,
+                description: description
             },
             errorMessage: 'Attached file is not an image.',
-            validationErrors: [],
+            validationErrors: []
         })
     }
+
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
@@ -49,22 +50,21 @@ exports.postAddProduct = (req, res, next) => {
             product: {
                 title: title,
                 price: price,
-                description: description,
+                description: description
             },
             errorMessage: errors.array()[0].msg,
-            validationErrors: errors.array(),
+            validationErrors: errors.array()
         })
     }
 
     const imageUrl = image.path
 
     const product = new Product({
-        // _id: new mongoose.Types.ObjectId('5badf72403fd8b5be0366e81'),
         title: title,
         price: price,
         description: description,
         imageUrl: imageUrl,
-        userId: req.user,
+        userId: req.user
     })
     product
         .save()
@@ -82,6 +82,7 @@ exports.postAddProduct = (req, res, next) => {
 
 exports.getEditProduct = (req, res, next) => {
     const editMode = req.query.edit
+    
     if (!editMode) {
         return res.redirect('/')
     }
@@ -98,7 +99,7 @@ exports.getEditProduct = (req, res, next) => {
                 product: product,
                 hasError: false,
                 errorMessage: null,
-                validationErrors: [],
+                validationErrors: []
             })
         })
         .catch((err) => {
@@ -127,10 +128,10 @@ exports.postEditProduct = (req, res, next) => {
                 title: updatedTitle,
                 price: updatedPrice,
                 description: updatedDesc,
-                _id: prodId,
+                _id: prodId
             },
             errorMessage: errors.array()[0].msg,
-            validationErrors: errors.array(),
+            validationErrors: errors.array()
         })
     }
 
@@ -164,7 +165,7 @@ exports.getProducts = (req, res, next) => {
             res.render('admin/products', {
                 prods: products,
                 pageTitle: 'Admin Products',
-                path: '/admin/products',
+                path: '/admin/products'
             })
         })
         .catch((err) => {

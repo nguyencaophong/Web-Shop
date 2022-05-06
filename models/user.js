@@ -5,11 +5,11 @@ const Schema = mongoose.Schema
 const userSchema = new Schema({
     email: {
         type: String,
-        required: true,
+        required: true
     },
     password: {
         type: String,
-        required: true,
+        required: true
     },
     role: String,
     resetToken: String,
@@ -20,20 +20,21 @@ const userSchema = new Schema({
                 productId: {
                     type: Schema.Types.ObjectId,
                     ref: 'Product',
-                    required: true,
+                    required: true
                 },
-                quantity: { type: Number, required: true },
-            },
-        ],
-    },
+                quantity: { type: Number, required: true }
+            }
+        ]
+    }
 })
 
 userSchema.methods.addToCart = function (product) {
     const cartProductIndex = this.cart.items.findIndex((cp) => {
+        console.log(cp.productId.toString(),product._id.toString());
         return cp.productId.toString() === product._id.toString()
     })
     let newQuantity = 1
-    // copy array cartProductIndex ra một mảng mới và gán nó lại vào updateCartItems array.
+
     const updatedCartItems = [...this.cart.items]
 
     if (cartProductIndex >= 0) {
@@ -42,11 +43,11 @@ userSchema.methods.addToCart = function (product) {
     } else {
         updatedCartItems.push({
             productId: product._id,
-            quantity: newQuantity,
+            quantity: newQuantity
         })
     }
     const updatedCart = {
-        items: updatedCartItems,
+        items: updatedCartItems
     }
     this.cart = updatedCart
     return this.save()

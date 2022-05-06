@@ -24,7 +24,7 @@ exports.getProducts = async (req, res, next) => {
             hasPreviousPage: page > 1,
             nextPage: page + 1,
             previousPage: page - 1,
-            lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+            lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
         })
     } catch (error) {
         console.log(error)
@@ -39,7 +39,7 @@ exports.getProduct = async (req, res, next) => {
         res.render('shop/product-detail', {
             product: prodDetail,
             pageTitle: prodDetail.title,
-            path: '/products',
+            path: '/products'
         })
     } catch (error) {
         console.log(error)
@@ -47,6 +47,7 @@ exports.getProduct = async (req, res, next) => {
 }
 
 exports.getIndex = async (req, res, next) => {
+
     const page = +req.query.page || 1
     try {
         const totalProduct = await Product.find()
@@ -64,7 +65,7 @@ exports.getIndex = async (req, res, next) => {
             hasPreviousPage: page > 1,
             nextPage: page + 1,
             previousPage: page - 1,
-            lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+            lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
         })
     } catch (error) {
         console.log(error)
@@ -81,7 +82,7 @@ exports.getCart = async (req, res, next) => {
         res.render('shop/cart', {
             path: '/cart',
             pageTitle: 'Your Cart',
-            products: products,
+            products: products
         })
     } catch (error) {
         console.log(error)
@@ -125,7 +126,7 @@ exports.postOrder = async (req, res, next) => {
         function fillterProduct(product) {
             return {
                 quantity: product.quantity,
-                product: {...product.productId._doc },
+                product: {...product.productId._doc }
             }
         }
         const listProduct = orderProduct.cart.items.map(fillterProduct)
@@ -133,9 +134,9 @@ exports.postOrder = async (req, res, next) => {
         const order = new Order({
             user: {
                 email: req.user.email,
-                userId: req.user,
+                userId: req.user
             },
-            products: listProduct,
+            products: listProduct
         })
 
         await order.save()
@@ -153,7 +154,7 @@ exports.getOrders = async (req, res, next) => {
         res.render('shop/orders', {
             path: '/orders',
             pageTitle: 'Your Orders',
-            orders: productOrder,
+            orders: productOrder
         })
     } catch (error) {
         console.log(error)

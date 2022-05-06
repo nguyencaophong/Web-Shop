@@ -11,8 +11,8 @@ const transporter = nodemailer.createTransport(
     sendgridTransport({
         auth: {
             // eslint-disable-next-line no-undef
-            api_key: process.env.TOKEN_SENDGRID,
-        },
+            api_key: process.env.TOKEN_SENDGRID
+        }
     })
 )
 
@@ -26,17 +26,17 @@ exports.getLogin = (req, res, next) => {
     res.render('auth/login', {
         path: '/login',
         pageTitle: 'Login',
-        errorMessage: message,
+        errorMessage: null,
         oldInput: {
             email: '',
-            password: '',
+            password: ''
         },
-        validationErrors: [],
+        validationErrors: []
     })
 }
 
 exports.getSignup = (req, res, next) => {
-let message = req.flash('error')
+    let message = req.flash('error')
     if (message.length > 0) {
         message = message[0]
     } else {
@@ -49,9 +49,9 @@ let message = req.flash('error')
         oldInput: {
             email: '',
             password: '',
-            confirmPassword: '',
+            confirmPassword: ''
         },
-        validationErrors: [],
+        validationErrors: []
     })
 }
 
@@ -67,9 +67,9 @@ exports.postLogin = async (req, res, next) => {
             errorMessage: errors.array()[0].msg,
             oldInput: {
                 email: email,
-                password: password,
+                password: password
             },
-            validationErrors: errors.array(),
+            validationErrors: errors.array()
         })
     }
 
@@ -82,12 +82,13 @@ exports.postLogin = async (req, res, next) => {
                 errorMessage: 'Invalid email or password.',
                 oldInput: {
                     email: email,
-                    password: password,
+                    password: password
                 },
-                validationErrors: [],
+                validationErrors: [ ]
             })
         }
 
+        
         const checkPassword = await bcrypt.compare(password, userLogin.password)
         const roleUser = userLogin.role
 
@@ -103,9 +104,9 @@ exports.postLogin = async (req, res, next) => {
                 errorMessage: 'Invalid email or password.',
                 oldInput: {
                     email: email,
-                    password: password,
+                    password: password
                 },
-                validationErrors: [],
+                validationErrors: []
             })
         }
     } catch (error) {
@@ -131,9 +132,9 @@ exports.postSignup = async (req, res, next) => {
                 email: email,
                 password: password,
                 confirmPassword: req.body.confirmPassword,
-                roleUser: req.body.roleUser,
+                roleUser: req.body.roleUser
             },
-            validationErrors: errors.array(),
+            validationErrors: errors.array()
         })
     }
 
@@ -146,9 +147,9 @@ exports.postSignup = async (req, res, next) => {
                 email: email,
                 password: password,
                 confirmPassword: req.body.confirmPassword,
-                roleUser: req.body.roleUser,
+                roleUser: req.body.roleUser
             },
-            validationErrors: errors.array(),
+            validationErrors: errors.array()
         })
     }
 
@@ -158,16 +159,10 @@ exports.postSignup = async (req, res, next) => {
             email: email,
             password: bcryptPassword,
             role: role,
-            cart: { items: [] },
+            cart: { items: [] }
         })
 
         await user.save()
-        // await transporter.sendMail({
-        //   to:email,
-        //   from: process.env.EMAIL_SENDGRID,
-        //   subject: 'Singup successed!',
-        //   html:'<h1>You successfully signed up!</h1>'
-        // });
         res.redirect('/login')
     } catch (error) {
         console.log(error)
@@ -193,7 +188,7 @@ exports.getReset = (req, res, next) => {
         res.render('auth/reset', {
             path: '/reset',
             pageTitle: 'Reset Password',
-            errorMessage: message,
+            errorMessage: message
         })
     } catch (error) {
         console.log(error)
@@ -227,7 +222,7 @@ exports.postReset = async (req, res, next) => {
             html: `
                 <p>You requested a password reset</p>
                 <p>Click this <a href="http://localhost:5000/reset/${token}">link</a> to set a new password.</p>
-              `,
+              `
         })
         console.log('Send email success!')
 
@@ -244,7 +239,7 @@ exports.getNewPassword = async (req, res, next) => {
     try {
         const userDetail = await User.findOne({
             resetToken: token,
-            resetTokenExpiration: { $gt: Date.now() },
+            resetTokenExpiration: { $gt: Date.now() }
         })
 
         if (message.length > 0) {
@@ -257,7 +252,7 @@ exports.getNewPassword = async (req, res, next) => {
             pageTitle: 'New Password',
             errorMessage: message,
             userId: userDetail._id.toString(),
-            passwordToken: token,
+            passwordToken: token
         })
     } catch (error) {
         console.log(error)
@@ -274,7 +269,7 @@ exports.postNewPassword = async (req, res, next) => {
         const userDetail = await User.findOne({
             resetToken: passwordToken,
             resetTokenExpiration: { $gt: Date.now() },
-            _id: userId,
+            _id: userId
         })
 
         resetUser = userDetail
