@@ -10,7 +10,7 @@
     "lint": "eslint --ext js",
     "lint:fix": "eslint --fix --ext /**/.js"
   },
-  "author": "Maximilian Schwarzmüller",
+  "author": "lifegoeson",
   "license": "ISC",
   "devDependencies": {
     "dotenv": "^16.0.0",

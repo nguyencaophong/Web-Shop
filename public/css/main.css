@@ -34,10 +34,14 @@ form {
 .main-header {
   width: 100%;
   height: 100px;
-  background-color: #bdb1bb;
+  background-color: #181818;
   padding: 0 1.5rem;
   display: flex;
   align-items: center;
+}
+
+.main-header__item a:hover{
+  text-decoration: none;
 }
 
 .main-header__nav {
@@ -53,11 +57,17 @@ form {
   margin: 0;
   padding: 0;
   display: flex;
+  align-items: center;
 }
 
 .main-header__item {
   margin: 0 1rem;
   padding: 0;
+}
+
+.main-header__nav-img img{
+  max-width: 100px;
+  border-radius: 2px;
 }
 
 .main-header__item a,

@@ -94,3 +94,51 @@
     font-size: 16px;
     opacity: 0.8;
 }
+
+.container-form-main{
+    margin: 48px 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #333;
+}
+.container-form-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.span-title{
+    font-weight: 600;
+    font-size: 24px;
+    margin: 32px 12px;
+}
+
+.container-form-item label{
+    font-size: 20px;
+    margin: 8px 48px;
+    font-weight: 600;
+}
+
+.container-form-add-product button{
+    margin: 24px 4px;
+    background-color: rgb(28, 152, 75);
+    color: whitesmoke;
+}
+
+.container-form-item input{
+    width: 400px;
+
+}
+.conatiner-form-item-list{
+    display: flex;
+    flex-direction: column;
+}
+
+.container-form-main{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: center;
+}

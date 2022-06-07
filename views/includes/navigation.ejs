@@ -3,11 +3,20 @@
     <button id="side-menu-toggle">Menu</button>
     <nav class="main-header__nav">
         <ul class="main-header__item-list">
-            <li class="main-header__item">
+            <a href="/">
+                <div class="main-header__nav-img">
+                    <img src="/images/logo.png" alt="logo">
+                </div>
+
+            </a>
+            <li class="main-header__item" style="margin-left: 48px;">
                 <a class="<%= path === '/' ? 'active' : '' %>" href="/">Shop</a>
             </li>
             <li class="main-header__item">
-                <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Products</a>
+                <a class="<%= path === '/products' ? 'active' : '' %>" href="/products">Products
+                    <i class="fa-solid fa-angle-down" style="font-size: 12px;"></i>
+
+                </a>
             </li>
             <% if (isAuthenticated && roleUser=='admin') { %>
                 <li class="main-header__item">

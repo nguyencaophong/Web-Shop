@@ -83,9 +83,9 @@ exports.getCart =async (req, res, next) => {
         const getAllProduct =await req.user
             .populate('cart.items.productId')
             .execPopulate();
-      
-    
-        const products = getAllProduct.cart.items;
+        
+            
+            const products = getAllProduct.cart.items;
         res.render('shop/cart', {
             path: '/cart',
             pageTitle: 'Your Cart',
@@ -122,6 +122,7 @@ exports.postCartDeleteProduct =async (req, res, next) => {
             error.httpStatusCode = 500;
             return next(error);
         });
+        
 };
 
 
