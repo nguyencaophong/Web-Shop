@@ -134,6 +134,7 @@ exports.postEditProduct = (req, res, next) => {
         });
     }
 
+
     Product.findById(prodId)
         .then(product => {
             if (product.userId.toString() !== req.user._id.toString()) {
