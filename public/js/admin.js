@@ -1,23 +1,19 @@
-const deleteProduct = btn => {
-  const prodId = btn.parentNode.querySelector('[name=productId]').value;
-  const csrf = btn.parentNode.querySelector('[name=_csrf]').value;
+               // Exec form Delete 
+               const btndeletemovieId = document.getElementById('deleteItems')
+               const deleteForm = document.forms['delete-form-items']
+               let itemId;
+               document.addEventListener('DOMContentLoaded' , () =>{
+                   $('#delete-items').on('show.bs.modal', function (event) {
+                       const button = $(event.relatedTarget) 
+                       itemId = button.data('id') ;   
+                   })
+               })
 
-  const productElement = btn.closest('article');
+               btndeletemovieId.onclick = () =>{
+                   deleteForm.action = `/admin/delete-product/${itemId}?_method=DELETE`;
 
-  fetch('/admin/product/' + prodId, {
-    method: 'DELETE',
-    headers: {
-      'csrf-token': csrf
-    }
-  })
-    .then(result => {
-      return result.json();
-    })
-    .then(data => {
-      console.log(data);
-      productElement.parentNode.removeChild(productElement);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-};
+                   const hidden_Prod = document.getElementById('hidden-itemId');
+
+                   hidden_Prod.value = itemId;
+                   deleteForm.submit();
+               }

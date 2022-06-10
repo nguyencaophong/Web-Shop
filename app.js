@@ -12,7 +12,7 @@ const dotenv = require('dotenv');
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
-
+const methodOverride = require('method-override');
 const MONGODB_URI = 'mongodb+srv://lifegoeson:uDfS9EAzeVKslhnf@cluster0.tvipf.mongodb.net/shop';
 
 const app = express();
@@ -24,7 +24,7 @@ const store = new MongoDBStore({
 const csrfProtection = csrf();
 
 dotenv.config();
-
+app.use(methodOverride('_method'));
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, './images');

@@ -161,8 +161,6 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
     Product.find({ userId: req.user._id })
-    // .select('title price -_id')
-    // .populate('userId', 'name')
         .then(products => {
         
             res.render('admin/products', {
@@ -178,21 +176,14 @@ exports.getProducts = (req, res, next) => {
         });
 };
 
-exports.deleteProduct = (req, res, next) => {
-    const prodId = req.params.productId;
-    Product.findById(prodId)
-        .then(product => {
-            if (!product) {
-                return next(new Error('Product not found.'));
-            }
-            fileHelper.deleteFile(product.imageUrl);
-            return Product.deleteOne({ _id: prodId, userId: req.user._id });
-        })
-        .then(() => {
-            console.log('DESTROYED PRODUCT');
-            res.status(200).json({ message: 'Success!' });
-        })
-        .catch(err => {
-            res.status(500).json({ message: 'Deleting product failed.' });
-        });
+exports.deleteProduct =async (req, res, next) => {
+    try {
+        const productId = req.params.productId;
+        await Product.deleteOne({_id: productId});
+        res.redirect(`/admin/products`);
+        console.log('DELETE PRODUCT SUCCESS!!!');
+    } catch (error) {
+        console.log(error);
+    }
+
 };
