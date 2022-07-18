@@ -108,55 +108,69 @@ exports.getEditProduct = (req, res, next) => {
         });
 };
 
-exports.postEditProduct = (req, res, next) => {
+exports.postEditProduct =async (req, res, next) => {
     const prodId = req.body.productId;
     const updatedTitle = req.body.title;
     const updatedPrice = req.body.price;
     const image = req.file;
     const updatedDesc = req.body.description;
 
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
+    console.log(image,'hello');
+    if (!image) {
         return res.status(422).render('admin/edit-product', {
-            pageTitle: 'Edit Product',
+            pageTitle: 'Add Product',
             path: '/admin/edit-product',
             editing: true,
             hasError: true,
             product: {
                 title: updatedTitle,
                 price: updatedPrice,
-                description: updatedDesc,
-                _id: prodId
+                description: updatedDesc
+            },
+            errorMessage: 'Attached file is not an image.',
+            validationErrors: []
+        });
+    }
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+
+        return res.status(422).render('admin/edit-product', {
+            pageTitle: 'Add Product',
+            path: '/admin/edit-product',
+            editing: true,
+            hasError: true,
+            product: {
+                title: updatedTitle,
+                price: updatedPrice,
+                description: updatedDesc
             },
             errorMessage: errors.array()[0].msg,
             validationErrors: errors.array()
         });
     }
 
+    const product = await Product.findById(prodId);
+    if (image) {
+        fileHelper.deleteFile(product.imageUrl);
+        product.imageUrl = image.path;
+    }
 
-    Product.findById(prodId)
-        .then(product => {
-            if (product.userId.toString() !== req.user._id.toString()) {
-                return res.redirect('/');
+
+        const productDetail = await Product.updateOne({_id:prodId},{
+            title: updatedTitle,
+                price: updatedPrice,
+                description: updatedDesc,
+                imageUrl: image.path
+        }, function (err, docs) {
+            if (err){
+                console.log(err)
             }
-            product.title = updatedTitle;
-            product.price = updatedPrice;
-            product.description = updatedDesc;
-            if (image) {
-                fileHelper.deleteFile(product.imageUrl);
-                product.imageUrl = image.path;
+            else{
+                console.log("Updated success");
             }
-            return product.save().then(result => {
-                console.log('UPDATED PRODUCT!');
-                res.redirect('/admin/products');
-            });
-        })
-        .catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
         });
+        res.redirect('/');
 };
 
 exports.getProducts = (req, res, next) => {
